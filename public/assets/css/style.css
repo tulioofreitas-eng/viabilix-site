@@ -627,6 +627,16 @@ p { color: #4a5058; }
 }
 .footer-brand img { height: 34px; margin-bottom: 16px; filter: brightness(0) invert(1); opacity: 0.92; }
 .footer-brand p { color: var(--prata); font-size: 0.88rem; max-width: 30ch; }
+.footer-socials { display: flex; gap: 12px; margin-top: 20px; }
+.footer-socials a {
+  width: 34px; height: 34px;
+  border: 1px solid rgba(200,205,210,0.25);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--prata);
+  transition: all .2s ease;
+}
+.footer-socials a:hover { background: var(--bordo); border-color: var(--bordo); color: var(--white); }
 .footer-col h4 {
   font-family: var(--font-display);
   color: var(--white);
