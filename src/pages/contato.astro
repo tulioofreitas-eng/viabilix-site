@@ -56,6 +56,13 @@ import Layout from '../layouts/Layout.astro';
       </div>
 
       <div class="form-card">
+        <div id="contato-sucesso" style="display:none; text-align:center; padding:40px 20px;">
+          <div style="width:56px; height:56px; margin:0 auto 20px; border-radius:50%; background:rgba(96,24,48,0.1); display:flex; align-items:center; justify-content:center;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#601830" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <h3 style="margin-bottom:8px;">Mensagem enviada!</h3>
+          <p style="color:#565c64;">Vamos retornar em breve.</p>
+        </div>
         <form id="form-contato">
           <div class="form-row">
             <div class="form-group">
@@ -105,6 +112,7 @@ import Layout from '../layouts/Layout.astro';
   const form = document.getElementById('form-contato') as HTMLFormElement;
   const status = document.getElementById('contato-status') as HTMLParagraphElement;
   const botao = document.getElementById('btn-enviar-contato') as HTMLButtonElement;
+  const sucesso = document.getElementById('contato-sucesso') as HTMLDivElement;
 
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -120,9 +128,7 @@ import Layout from '../layouts/Layout.astro';
       if (resposta.ok) {
         form.reset();
         form.style.display = 'none';
-        status.textContent = 'Mensagem enviada! Vamos retornar em breve.';
-        status.style.color = '#601830';
-        status.style.fontWeight = '600';
+        sucesso.style.display = 'block';
       } else {
         status.textContent = dados.error || 'Não foi possível enviar. Tenta de novo ou fala pelo WhatsApp.';
         botao.disabled = false;
