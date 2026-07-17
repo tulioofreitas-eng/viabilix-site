@@ -56,7 +56,7 @@ import Layout from '../layouts/Layout.astro';
       </div>
 
       <div class="form-card">
-        <form action="mailto:contato@viabilix.com.br" method="post" enctype="text/plain">
+        <form id="form-contato">
           <div class="form-row">
             <div class="form-group">
               <label for="nome">Nome</label>
@@ -92,12 +92,48 @@ import Layout from '../layouts/Layout.astro';
             <label for="mensagem">Mensagem</label>
             <textarea id="mensagem" name="mensagem" placeholder="Conte um pouco da situação atual da sua empresa"></textarea>
           </div>
-          <button type="submit" class="btn btn-primary">Enviar mensagem</button>
-          <p class="form-note">Ao enviar, você abrirá seu aplicativo de e-mail padrão com a mensagem preenchida.</p>
+          <input type="text" name="site_url" style="position:absolute; left:-9999px;" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button type="submit" class="btn btn-primary" id="btn-enviar-contato">Enviar mensagem</button>
+          <p class="form-note" id="contato-status">Respondemos o mais rápido possível, geralmente no mesmo dia útil.</p>
         </form>
       </div>
-
     </div>
   </div>
 </section>
+
+<script>
+  const form = document.getElementById('form-contato') as HTMLFormElement;
+  const status = document.getElementById('contato-status') as HTMLParagraphElement;
+  const botao = document.getElementById('btn-enviar-contato') as HTMLButtonElement;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const textoOriginal = botao.textContent;
+    botao.disabled = true;
+    botao.textContent = 'Enviando...';
+    status.textContent = '';
+
+    try {
+      const resposta = await fetch('/api/lead', { method: 'POST', body: new FormData(form) });
+      const dados = await resposta.json();
+
+      if (resposta.ok) {
+        form.reset();
+        form.style.display = 'none';
+        status.textContent = 'Mensagem enviada! Vamos retornar em breve.';
+        status.style.color = '#601830';
+        status.style.fontWeight = '600';
+      } else {
+        status.textContent = dados.error || 'Não foi possível enviar. Tenta de novo ou fala pelo WhatsApp.';
+        botao.disabled = false;
+        botao.textContent = textoOriginal;
+      }
+    } catch {
+      status.textContent = 'Não foi possível enviar. Tenta de novo ou fala pelo WhatsApp.';
+      botao.disabled = false;
+      botao.textContent = textoOriginal;
+    }
+  });
+</script>
+
 </Layout>

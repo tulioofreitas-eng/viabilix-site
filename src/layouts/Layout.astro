@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import BotaoWhatsapp from '../components/BotaoWhatsapp.astro';
 
 interface Props {
   title: string;
@@ -28,6 +29,7 @@ const { title, description, active } = Astro.props;
   <Header active={active} />
   <slot />
   <Footer />
+  <BotaoWhatsapp />
   <script is:inline src="/assets/js/main.js"></script>
 </body>
 </html>
